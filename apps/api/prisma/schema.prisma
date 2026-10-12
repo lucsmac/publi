@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Pedido de orçamento vindo do site.
+model Lead {
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now())
+  name      String
+  phone     String
+  email     String?
+  service   String // evento | casamento | marcas | blitz
+  eventDate DateTime?
+  city      String?
+  budget    String?
+  message   String?
+  status    String    @default("novo") // novo | em_contato | proposta | fechado | perdido
+
+  @@index([status, createdAt])
+}
+
+// Inscrito na lista de espera da Escola de Storymaker.
+model WaitlistEntry {
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  name       String
+  phone      String   @unique
+  email      String?
+  level      String // iniciante | ja_gravo | ja_vendo
+  difficulty String // roteiro | gravacao | edicao | preco | clientes
+  notes      String?
+}
+
+// Candidato a storymaker da equipe.
+model Candidate {
+  id           String   @id @default(cuid())
+  createdAt    DateTime @default(now())
+  name         String
+  phone        String
+  city         String
+  instagram    String?
+  experience   String // nenhuma | ate_1_ano | mais_de_1_ano
+  equipment    String?
+  portfolioUrl String?
+  notes        String?
+}
